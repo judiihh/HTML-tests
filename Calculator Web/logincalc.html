@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #CC8F94;
+            color: #fff;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #CC8F94;
+        }
+        .italic {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="login-container">
+    <h1>~Welcome to your Login Screen~</h1>
+    <p class="italic">*To log into your account, please enter your username and password.*</p>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+    <p id="login-message"></p>
+</div>
+
+<div class="container" id="calculator-container" style="display:none;">
+    <h1>~Calculadora Jud~</h1>
+    <p>
+        Si deseas sumar, escribe: SUMA<br>
+        Si deseas restar, escribe: RESTA<br>
+        Si deseas multiplicar, escribe: MULTIPLICA<br>
+        Si deseas dividir, escribe: DIVIDE
+    </p>
+    <input type="text" id="operation" placeholder="Escribe la operación que deseas realizar">
+    <input type="number" id="num1" placeholder="Introduzca el primer valor">
+    <input type="number" id="num2" placeholder="Introduzca el segundo valor">
+    <button type="button" onclick="calculate()">Calcular</button>
+    <p id="calc-result"></p>
+    <button type="button" onclick="resetCalculator()">Otra Operación</button>
+    <button type="button" onclick="logout()">Cerrar Sesión</button>
+</div>
+
+<script>
+    const users = {
+        "jose22": "1234",
+        "linda90": "12345",
+        "pitita04": "123456"
+    };
+
+    function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const loginMessage = document.getElementById("login-message");
+
+        if (users[username] && users[username] === password) {
+            loginMessage.style.color = "green";
+            loginMessage.textContent = `Login successful! Welcome ${username.charAt(0).toUpperCase() + username.slice(1)} to your page!`;
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("calculator-container").style.display = "block";
+        } else {
+            loginMessage.style.color = "red";
+            loginMessage.textContent = "Wrong Username or Password";
+        }
+    }
+
+    function calculate() {
+        const operation = document.getElementById("operation").value.toUpperCase();
+        const num1 = parseFloat(document.getElementById("num1").value);
+        const num2 = parseFloat(document.getElementById("num2").value);
+        const calcResult = document.getElementById("calc-result");
+
+        let result;
+        switch (operation) {
+            case "SUMA":
+                result = num1 + num2;
+                break;
+            case "RESTA":
+                result = num1 - num2;
+                break;
+            case "MULTIPLICA":
+                result = num1 * num2;
+                break;
+            case "DIVIDE":
+                if (num2 !== 0) {
+                    result = num1 / num2;
+                } else {
+                    calcResult.style.color = "red";
+                    calcResult.innerHTML = "<em>*No se puede dividir entre cero. Operación no válida. Por favor, elige una opción válida.*</em>";
+                    return;
+                }
+                break;
+            default:
+                calcResult.style.color = "red";
+                calcResult.textContent = "Operación no válida. Por favor, elige una opción válida.";
+                return;
+        }
+
+        calcResult.style.color = "black";
+        calcResult.textContent = "Resultado: " + result;
+    }
+
+    function resetCalculator() {
+        document.getElementById("operation").value = "";
+        document.getElementById("num1").value = "";
+        document.getElementById("num2").value = "";
+        document.getElementById("calc-result").textContent = "";
+    }
+
+    function logout() {
+        document.getElementById("login-container").style.display = "block";
+        document.getElementById("calculator-container").style.display = "none";
+        document.getElementById("loginForm").reset();
+        document.getElementById("login-message").textContent = "";
+        resetCalculator();
+    }
+</script>
+
+</body>
+</html>
