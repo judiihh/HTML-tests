@@ -159,6 +159,7 @@
       box-shadow: 0 12px 20px rgba(255,106,163,0.28), inset 0 -2px 6px rgba(0,0,0,0.12);
       cursor: pointer;
       transform: translateY(0);
+      text-decoration: none;
       transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
     }
     .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
@@ -206,13 +207,14 @@
       width: 100%;
       text-align: left;
       cursor: pointer;
+      font-family: inherit;
       transition: transform .12s ease, filter .2s ease;
     }
     button.feature:hover { transform: translateY(-1px); }
     button.feature:focus-visible { outline: 3px solid var(--pink-400); outline-offset: 2px; }
 
     /* Modal (dialog) styling */
-    dialog#inspoDialog {
+    dialog.modal {
       border: none;
       border-radius: var(--radius-lg);
       padding: 0;
@@ -221,7 +223,7 @@
       background: var(--card);
       color: var(--ink);
     }
-    dialog#inspoDialog::backdrop {
+    dialog.modal::backdrop {
       background: rgba(59,43,52,0.45);
       backdrop-filter: blur(2px);
     }
@@ -234,6 +236,15 @@
     }
     .modal-head h2 { margin: 0; font-size: 1.2rem; }
     .modal-body { padding: 14px 18px 18px; color: var(--ink-soft); line-height: 1.6; }
+    .modal-body ol {
+      margin: 0;
+      padding-left: 1.4rem;
+    }
+    .modal-body li + li { margin-top: 6px; }
+    .modal-body li::marker {
+      color: var(--pink-600);
+      font-weight: 700;
+    }
     .modal-close {
       appearance: none; -webkit-appearance: none;
       border: 0; background: var(--pink-100); color: var(--pink-600);
@@ -337,13 +348,20 @@
             aria-controls="inspoDialog"
             aria-label="Open story: The Dream I Never Thought It Could Come..."
           >
-            <h3>Sweet Colors</h3>
-            <p>My inspiration story.</p>
+            <h3>My Story</h3>
+          <p>My inspiration of why I decided to study Software Engineering.</p>
           </button>
-          <div class="feature">
-            <h3>Cute Buttons</h3>
-            <p>My Why's.</p>
-          </div>
+          <button
+            class="feature"
+            type="button"
+            id="whysTrigger"
+            aria-haspopup="dialog"
+            aria-controls="whysDialog"
+            aria-label="Open story: My Why's"
+          >
+            <h3>My Why's</h3>
+            <p>The reasons of my career change.</p>
+          </button>
           <div class="feature">
             <h3>Playful Vibes</h3>
             <p>Floating hearts bring tiny joy.</p>
@@ -354,7 +372,7 @@
 
     <section id="gallery" class="card" style="margin-top:18px;">
       <h2 style="margin:0 0 10px 0">Mini Gallery</h2>
-      <p class="subtitle">Just placeholders for now — swap in your pics or quotes.</p>
+      <p class="subtitle">I'm just a simple, christian, gamer & tech-savvy girl who changed her medical career to be a Software Engineer.👩🏻‍💻</p>
       <div class="gallery">
         <div class="polaroid">🌸 Blossom</div>
         <div class="polaroid">🍓 Berry</div>
@@ -363,16 +381,18 @@
     </section>
 
     <section id="contact" class="card" style="margin-top:18px;">
-      <h2 style="margin:0 0 10px 0">Say Hi</h2>
+      <h2 style="margin:0 0 10px 0">Let's Connect!✨</h2>
       <p class="subtitle">Have an idea? Want a new section? Tap the heart and let’s make it adorable.</p>
       <div class="row">
-        <a class="btn" href="mailto:hi@example.com" aria-label="Send an email">✉ Email</a>
-        <a class="btn ghost" href="#about">⬆ Back to top</a>
+        <a class="btn" href="https://github.com/judiihh" target="_blank" rel="noopener" aria-label="Visit Judith's GitHub profile">💻GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/judithespinal12/" target="_blank" rel="noopener" aria-label="Visit Judith's LinkedIn profile">💼LinkedIn</a>
+        <a class="btn" href="https://www.instagram.com/judithespinalm/" target="_blank" rel="noopener" aria-label="Visit Judith's Instagram profile">📸Instagram</a>
+        <a class="btn" href="mailto:j.espinalm12@gmail.com" aria-label="Send an email">✉Email</a>
       </div>
     </section>
   </main>
 
-  <dialog id="inspoDialog" aria-labelledby="inspoTitle">
+  <dialog id="inspoDialog" class="modal" aria-labelledby="inspoTitle">
     <div class="modal-head">
       <h2 id="inspoTitle">✨The Dream I Never Thought It Could Come...</h2>
       <button class="modal-close" type="button" aria-label="Close dialog">✕</button>
@@ -381,6 +401,21 @@
       <p>
         I was lacking inspiration, motivation, and dedication to find out that I really wanted to learn something new in my professional career. I come from a whole different path — the world of Science and Health, Hospitals and Laboratories🏥🔬 — with a little bit of programming knowledge from my High School years. Time passed, and I thought that I could never begin something new like this program as a Software Developer, but God put in my life a special person who encouraged me to do this — to try something new and give my profession a 180° rotation. This is just the beginning of my new life, starting from Level 1, and I welcome you to know a little more about my story in this safe place.🫶🌸
       </p>
+    </div>
+  </dialog>
+
+  <dialog id="whysDialog" class="modal" aria-labelledby="whysTitle">
+    <div class="modal-head">
+      <h2 id="whysTitle">✨My Why's:</h2>
+      <button class="modal-close" type="button" aria-label="Close dialog">✕</button>
+    </div>
+    <div class="modal-body">
+      <ol>
+        <li>God✨</li>
+        <li>Me🌸</li>
+        <li>My Partner❤</li>
+        <li>My Parents👨‍👩‍👧‍👦</li>
+      </ol>
     </div>
   </dialog>
 
@@ -431,18 +466,21 @@
       });
     }
 
-    // Inspiration modal
-    const inspoTrigger = document.getElementById('inspoTrigger');
-    const inspoDialog = document.getElementById('inspoDialog');
-    if (inspoTrigger && inspoDialog && typeof inspoDialog.showModal === 'function') {
+    const setupModal = (triggerId, dialogId) => {
+      const trigger = document.getElementById(triggerId);
+      const dialog = document.getElementById(dialogId);
+      if (!trigger || !dialog || typeof dialog.showModal !== 'function') return;
       let lastActive;
-      const closeBtn = inspoDialog.querySelector('.modal-close');
-      const openModal = () => { lastActive = document.activeElement; inspoDialog.showModal(); };
-      const closeModal = () => { inspoDialog.close(); if (lastActive) lastActive.focus(); };
-      inspoTrigger.addEventListener('click', openModal);
+      const closeBtn = dialog.querySelector('.modal-close');
+      const openModal = () => { lastActive = document.activeElement; dialog.showModal(); };
+      const closeModal = () => { dialog.close(); lastActive?.focus(); };
+      trigger.addEventListener('click', openModal);
       closeBtn?.addEventListener('click', closeModal);
-      inspoDialog.addEventListener('click', (e) => { if (e.target === inspoDialog) closeModal(); });
-    }
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) closeModal(); });
+    };
+
+    setupModal('inspoTrigger', 'inspoDialog');
+    setupModal('whysTrigger', 'whysDialog');
   </script>
 </body>
 </html>
