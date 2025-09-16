@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Judith’s Cute Pink Corner</title>
+  <meta name="description" content="A cute, pink, playful starter site for Judith." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink-50: #fff6fa;
+      --pink-100: #ffe9f3;
+      --pink-200: #ffd3e6;
+      --pink-300: #ffb6d3;
+      --pink-400: #ff94c0;
+      --pink-500: #ff6aa3;
+      --pink-600: #ff4f94;
+      --ink: #3b2b34;
+      --ink-soft: #5a4150;
+      --card: #ffffff;
+      --shadow: 0 10px 30px rgba(255, 106, 163, 0.22);
+      --radius-lg: 18px;
+      --radius-sm: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Quicksand", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background:
+        radial-gradient(1400px 600px at -10% -20%, var(--pink-100), transparent 70%),
+        radial-gradient(1200px 800px at 110% 10%, var(--pink-200), transparent 60%),
+        linear-gradient(180deg, var(--pink-50), var(--pink-100));
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle sparkly dots */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7) 0 1px, transparent 2px),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.6) 0 1px, transparent 2px),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.5) 0 1px, transparent 2px);
+      background-size: 180px 180px, 220px 220px, 260px 260px;
+      filter: blur(0.2px);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: saturate(1.1) blur(8px);
+      background: color-mix(in srgb, var(--pink-50) 85%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--pink-300) 35%, transparent);
+    }
+
+    .nav {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.3px;
+    }
+
+    .brand .logo {
+      width: 32px; height: 32px;
+      display: grid; place-items: center;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .nav a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .nav a:hover { background: var(--pink-100); }
+
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 26px;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--pink-300) 30%, transparent);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 3.2vw + 1rem, 3.2rem);
+      line-height: 1.05;
+      margin: 0 0 10px 0;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+      margin: 0 0 18px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      --bg: var(--pink-500);
+      --bg2: var(--pink-600);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--bg), var(--bg2));
+      box-shadow: 0 12px 20px rgba(255,106,163,0.28), inset 0 -2px 6px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transform: translateY(0);
+      transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active { transform: translateY(0); filter: brightness(.98); }
+
+    .ghost {
+      color: var(--pink-600);
+      background: var(--pink-100);
+      box-shadow: inset 0 0 0 2px var(--pink-300);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--pink-100);
+      color: var(--pink-600);
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--pink-300);
+      letter-spacing: 0.3px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .feature {
+      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--pink-300) 35%, transparent);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      min-height: 110px;
+    }
+    .feature h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .feature p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+
+    /* Make feature card clickable as a button */
+    button.feature {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .12s ease, filter .2s ease;
+    }
+    button.feature:hover { transform: translateY(-1px); }
+    button.feature:focus-visible { outline: 3px solid var(--pink-400); outline-offset: 2px; }
+
+    /* Modal (dialog) styling */
+    dialog#inspoDialog {
+      border: none;
+      border-radius: var(--radius-lg);
+      padding: 0;
+      width: min(680px, 92vw);
+      box-shadow: 0 30px 60px rgba(59,43,52,0.25), var(--shadow);
+      background: var(--card);
+      color: var(--ink);
+    }
+    dialog#inspoDialog::backdrop {
+      background: rgba(59,43,52,0.45);
+      backdrop-filter: blur(2px);
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 16px 10px 18px;
+      border-bottom: 1px solid color-mix(in srgb, var(--pink-300) 35%, transparent);
+    }
+    .modal-head h2 { margin: 0; font-size: 1.2rem; }
+    .modal-body { padding: 14px 18px 18px; color: var(--ink-soft); line-height: 1.6; }
+    .modal-close {
+      appearance: none; -webkit-appearance: none;
+      border: 0; background: var(--pink-100); color: var(--pink-600);
+      font-weight: 700; border-radius: 10px; padding: 8px 10px; cursor: pointer;
+      border: 1px solid var(--pink-300);
+    }
+    .modal-close:hover { filter: brightness(1.03); }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .polaroid {
+      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--pink-300) 35%, transparent);
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+      display: grid; place-items: center;
+      aspect-ratio: 4/3;
+      color: var(--pink-600);
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--ink-soft);
+      padding: 26px 18px 42px;
+    }
+
+    /* Floating hearts on click */
+    .heart {
+      position: fixed;
+      left: 0; top: 0;
+      font-size: 18px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: floatUp 1000ms ease forwards;
+      filter: drop-shadow(0 6px 10px rgba(255, 106, 163, 0.35));
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translate(-50%, -30%) scale(.7) rotate(-8deg); }
+      20%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -140px) scale(1.35) rotate(12deg); }
+    }
+
+    /* Motion-reduced preference */
+    @media (prefers-reduced-motion: reduce) {
+      .btn, .heart { transition: none; animation: none; }
+      .heart { display: none; }
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 840px) {
+      .hero { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px) {
+      .feature-grid, .gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Primary">
+      <div class="brand" aria-label="Site logo">
+        <span class="logo" aria-hidden="true">❤</span>
+        <span>Judith’s Cute Pink Corner</span>
+      </div>
+      <div class="links">
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="about">
+      <div class="card">
+        <span class="badge" aria-hidden="true">new & sparkly</span>
+        <h1>Hello, cutie!</h1>
+        <p class="subtitle">Welcome to a tiny pink nook on the web — soft gradients, happy vibes, and cozy corners. Make yourself at home! ✨</p>
+        <div class="row">
+          <button class="btn cta" type="button" aria-label="Say hello">❤ Say hello</button>
+          <button class="btn ghost" type="button" id="sparkleToggle" aria-pressed="true">Toggle sparkles</button>
+        </div>
+        
+      </div>
+
+      <div class="card">
+        <div class="feature-grid">
+          <button
+            class="feature"
+            type="button"
+            id="inspoTrigger"
+            aria-haspopup="dialog"
+            aria-controls="inspoDialog"
+            aria-label="Open story: The Dream I Never Thought It Could Come..."
+          >
+            <h3>Sweet Colors</h3>
+            <p>My inspiration story.</p>
+          </button>
+          <div class="feature">
+            <h3>Cute Buttons</h3>
+            <p>Glossy gradients that pop on hover.</p>
+          </div>
+          <div class="feature">
+            <h3>Playful Vibes</h3>
+            <p>Floating hearts bring tiny joy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="card" style="margin-top:18px;">
+      <h2 style="margin:0 0 10px 0">Mini Gallery</h2>
+      <p class="subtitle">Just placeholders for now — swap in your pics or quotes.</p>
+      <div class="gallery">
+        <div class="polaroid">🌸 Blossom</div>
+        <div class="polaroid">🍓 Berry</div>
+        <div class="polaroid">🧁 Cupcake</div>
+      </div>
+    </section>
+
+    <section id="contact" class="card" style="margin-top:18px;">
+      <h2 style="margin:0 0 10px 0">Say Hi</h2>
+      <p class="subtitle">Have an idea? Want a new section? Tap the heart and let’s make it adorable.</p>
+      <div class="row">
+        <a class="btn" href="mailto:hi@example.com" aria-label="Send an email">✉ Email</a>
+        <a class="btn ghost" href="#about">⬆ Back to top</a>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="inspoDialog" aria-labelledby="inspoTitle">
+    <div class="modal-head">
+      <h2 id="inspoTitle">✨The Dream I Never Thought It Could Come...</h2>
+      <button class="modal-close" type="button" aria-label="Close dialog">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>
+        I was lacking inspiration, motivation, and dedication to find out that I really wanted to learn something new in my professional career. I come from a whole different path — the world of Science and Health, Hospitals and Laboratories🏥🔬 — with a little bit of programming knowledge from my High School years. Time passed, and I thought that I could never begin something new like this program as a Software Developer, but God put in my life a special person who encouraged me to do this — to try something new and give my profession a 180° rotation. This is just the beginning of my new life, starting from Level 1, and I welcome you to know a little more about my story in this safe place.🫶🌸
+      </p>
+    </div>
+  </dialog>
+
+  <footer>
+    Made with ❤ and CSS. You can edit this file at HTML/test.html.
+  </footer>
+
+  <script>
+    // Tiny floating heart effect on click
+    const spawnHeart = (x, y) => {
+      const h = document.createElement('span');
+      h.className = 'heart';
+      h.textContent = '❤';
+      h.style.left = x + 'px';
+      h.style.top = y + 'px';
+      h.style.color = ['#ff6aa3','#ff8fb9','#ff4f94'][Math.floor(Math.random()*3)];
+      h.style.fontSize = (16 + Math.random()*10) + 'px';
+      document.body.appendChild(h);
+      h.addEventListener('animationend', () => h.remove());
+    };
+
+    document.addEventListener('click', (e) => {
+      if (!sparklesOn) return;
+      spawnHeart(e.clientX, e.clientY);
+    });
+
+    // CTA spawns some hearts nearby
+    const cta = document.querySelector('.cta');
+    if (cta) {
+      cta.addEventListener('click', (e) => {
+        const rect = cta.getBoundingClientRect();
+        for (let i=0;i<6;i++) {
+          const jitterX = rect.left + rect.width/2 + (Math.random()*60 - 30);
+          const jitterY = rect.top + rect.height/2 + (Math.random()*20 - 10);
+          spawnHeart(jitterX, jitterY);
+        }
+      });
+    }
+
+    // Toggle sparkles accessibility
+    let sparklesOn = true;
+    const toggle = document.getElementById('sparkleToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        sparklesOn = !sparklesOn;
+        toggle.setAttribute('aria-pressed', String(sparklesOn));
+        toggle.textContent = sparklesOn ? 'Toggle sparkles' : 'Sparkles off';
+      });
+    }
+
+    // Inspiration modal
+    const inspoTrigger = document.getElementById('inspoTrigger');
+    const inspoDialog = document.getElementById('inspoDialog');
+    if (inspoTrigger && inspoDialog && typeof inspoDialog.showModal === 'function') {
+      let lastActive;
+      const closeBtn = inspoDialog.querySelector('.modal-close');
+      const openModal = () => { lastActive = document.activeElement; inspoDialog.showModal(); };
+      const closeModal = () => { inspoDialog.close(); if (lastActive) lastActive.focus(); };
+      inspoTrigger.addEventListener('click', openModal);
+      closeBtn?.addEventListener('click', closeModal);
+      inspoDialog.addEventListener('click', (e) => { if (e.target === inspoDialog) closeModal(); });
+    }
+  </script>
+</body>
+</html>
