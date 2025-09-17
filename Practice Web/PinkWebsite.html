@@ -172,14 +172,64 @@
     }
 
     .badge {
-      display: inline-block;
-      background: var(--pink-100);
+      display: inline-flex;
+      background: linear-gradient(130deg, var(--pink-100) 0%, #ffe5f2 45%, var(--pink-100) 100%);
+      background-size: 200%;
       color: var(--pink-600);
       font-weight: 700;
-      padding: 6px 10px;
+      padding: 4px 9px;
+      font-size: 0.78rem;
       border-radius: 999px;
       border: 1px solid var(--pink-300);
       letter-spacing: 0.3px;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      overflow: visible;
+      animation: badgeShimmer 3s ease-in-out infinite;
+    }
+
+    .badge::before,
+    .badge::after {
+      content: '✨';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--pink-400);
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 0 4px rgba(255,148,192,0.55));
+    }
+
+    .badge::before {
+      left: -12px;
+      animation: sparkleFloat 1.6s ease-in-out infinite;
+    }
+
+    .badge::after {
+      right: -12px;
+      animation: sparkleFloat 2.2s ease-in-out infinite 0.4s;
+    }
+
+    @keyframes sparkleFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.6) rotate(-12deg);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-62%) scale(1.05) rotate(10deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-70%) scale(0.6) rotate(-16deg);
+      }
+    }
+
+    @keyframes badgeShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .feature-grid {
@@ -295,7 +345,8 @@
 
     /* Motion-reduced preference */
     @media (prefers-reduced-motion: reduce) {
-      .btn, .heart { transition: none; animation: none; }
+      .btn, .heart, .badge { transition: none; animation: none; }
+      .badge::before, .badge::after { animation: none; opacity: 0; }
       .heart { display: none; }
     }
 
@@ -362,10 +413,17 @@
             <h3>My Why's</h3>
             <p>The reasons of my career change.</p>
           </button>
-          <div class="feature">
+          <button
+            class="feature"
+            type="button"
+            id="portfolioTrigger"
+            aria-haspopup="dialog"
+            aria-controls="portfolioDialog"
+            aria-label="Open story: Portfolio Highlights"
+          >
             <h3>Playful Vibes</h3>
-            <p>Floating hearts bring tiny joy.</p>
-          </div>
+            <p>Peek at recent portfolio projects.</p>
+          </button>
         </div>
       </div>
     </section>
@@ -406,21 +464,38 @@
 
   <dialog id="whysDialog" class="modal" aria-labelledby="whysTitle">
     <div class="modal-head">
-      <h2 id="whysTitle">✨My Why's:</h2>
+      <h2 id="whysTitle">💞My Why's:</h2>
       <button class="modal-close" type="button" aria-label="Close dialog">✕</button>
     </div>
     <div class="modal-body">
       <ol>
-        <li>God✨</li>
+        <li>God💖</li>
         <li>Me🌸</li>
-        <li>My Partner❤</li>
+        <li>My Partner🥰</li>
         <li>My Parents👨‍👩‍👧‍👦</li>
       </ol>
     </div>
   </dialog>
 
+  <dialog id="portfolioDialog" class="modal" aria-labelledby="portfolioTitle">
+    <div class="modal-head">
+      <h2 id="portfolioTitle">🎀Portfolio Highlights</h2>
+      <button class="modal-close" type="button" aria-label="Close dialog">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Here's a quick peek at projects I'm growing with love and curiosity:</p>
+      <ul style="margin: 0; padding-left: 1.2rem;">
+        <li><strong>VitaPink BloodBank</strong> — a platform that connects blood donors with blood centers.</li>
+        <li><strong>Web Calculator</strong> — a login-protected web app with a basic calculator.</li>
+        <li><strong>Simple Shell</strong> — a custom implementation of a Unix shell.</li>
+        <li><strong>Inventory WJ</strong> — an inventory web app for adding and searching inventory items.</li>
+      </ul>
+      <p style="margin-top: 14px;">More projects are on the way — stay tuned for fresh updates!✨</p>
+    </div>
+  </dialog>
+
   <footer>
-    Made with ❤ and CSS. You can edit this file at HTML/test.html.
+    Made with ❤ © 2025 SugarStarz
   </footer>
 
   <script>
@@ -481,6 +556,7 @@
 
     setupModal('inspoTrigger', 'inspoDialog');
     setupModal('whysTrigger', 'whysDialog');
+    setupModal('portfolioTrigger', 'portfolioDialog');
   </script>
 </body>
 </html>
