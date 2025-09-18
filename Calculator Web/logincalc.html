@@ -1,159 +1,513 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Calculator</title>
+    <title>Pantalla encantadora de login y calculadora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-top: #ffe6f4;
+            --bg-bottom: #fff5fa;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --primary: #ff7da3;
+            --primary-strong: #ff5c8d;
+            --outline: rgba(255, 255, 255, 0.7);
+            --ink: #523446;
+            --muted: #7b5a6a;
+            --success: #1c9c75;
+            --error: #d9536f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: clamp(24px, 5vw, 72px);
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(160deg, var(--bg-top), var(--bg-bottom));
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 65%);
+            filter: blur(0.5px);
+            z-index: -1;
+        }
+
+        body::before {
+            top: -80px;
+            left: -60px;
+        }
+
+        body::after {
+            bottom: -100px;
+            right: -40px;
+        }
+
+        main {
+            width: min(520px, 100%);
             display: flex;
             flex-direction: column;
+            align-items: stretch;
+            gap: 24px;
+            text-align: center;
+        }
+
+        .welcome h1 {
+            margin: 0 0 8px;
+            font-size: clamp(1.9rem, 3vw, 2.4rem);
+        }
+
+        .welcome p {
+            margin: 0 auto;
+            max-width: 32ch;
+            font-size: 1rem;
+            color: var(--muted);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: clamp(26px, 5vw, 42px);
+            box-shadow: 0 30px 60px -40px rgba(82, 52, 70, 0.6);
+            border: 1px solid var(--outline);
+            backdrop-filter: blur(6px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            top: -40px;
+            right: -40px;
+            background: radial-gradient(circle, rgba(255, 205, 225, 0.4) 0%, rgba(255, 205, 225, 0) 70%);
+            pointer-events: none;
+        }
+
+        form {
+            display: grid;
+            gap: 18px;
+            text-align: left;
+        }
+
+        label span,
+        legend {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        input[type='text'],
+        input[type='password'],
+        input[type='number'] {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.75);
+            font: inherit;
+            color: inherit;
+            transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        input[type='text']:focus-visible,
+        input[type='password']:focus-visible,
+        input[type='number']:focus-visible {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 125, 163, 0.2);
+            transform: translateY(-1px);
+        }
+
+        button {
+            font: inherit;
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: 12px 26px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .primary {
+            margin-top: 4px;
+            background: linear-gradient(120deg, var(--primary), var(--primary-strong));
+            color: #fff;
+            box-shadow: 0 12px 30px -18px var(--primary-strong);
+        }
+
+        .primary:hover,
+        .primary:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px -20px var(--primary-strong);
+        }
+
+        .ghost {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--muted);
+            border: 1px solid rgba(255, 125, 163, 0.2);
+        }
+
+        .ghost:hover,
+        .ghost:focus-visible {
+            background: rgba(255, 255, 255, 1);
+            color: var(--primary-strong);
+            transform: translateY(-2px);
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
             margin: 0;
         }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-bottom: 20px;
+
+        .operation-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        h1 {
-            margin-bottom: 20px;
+
+        .pill {
+            position: relative;
         }
-        input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+
+        .pill input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
         }
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            background-color: #CC8F94;
-            color: #fff;
-            cursor: pointer;
-            margin: 10px;
+
+        .pill span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid transparent;
+            transition: background 0.2s ease, border 0.2s ease, transform 0.2s ease, color 0.2s ease;
         }
-        button:hover {
-            background-color: #CC8F94;
+
+        .pill input:checked + span {
+            background: rgba(255, 125, 163, 0.2);
+            border-color: var(--primary);
+            color: var(--primary-strong);
+            box-shadow: 0 10px 26px -20px var(--primary-strong);
         }
-        .italic {
-            font-style: italic;
+
+        .pill span::before {
+            content: '\2665';
+            font-size: 0.9rem;
+            opacity: 0.48;
+        }
+
+        .inputs-double {
+            display: grid;
+            gap: 14px;
+        }
+
+        @media (min-width: 560px) {
+            .inputs-double {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid transparent;
+        }
+
+        .message[data-intent='success'] {
+            border-color: rgba(28, 156, 117, 0.2);
+            color: var(--success);
+        }
+
+        .message[data-intent='error'] {
+            border-color: rgba(217, 83, 111, 0.22);
+            color: var(--error);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .card--visible {
+            animation: pop 0.35s ease;
+        }
+
+        @keyframes pop {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            10%, 90% {
+                transform: translateX(-2px);
+            }
+            20%, 80% {
+                transform: translateX(4px);
+            }
+            30%, 50%, 70% {
+                transform: translateX(-6px);
+            }
+            40%, 60% {
+                transform: translateX(6px);
+            }
         }
     </style>
 </head>
 <body>
+<main>
+    <header class="welcome">
+        <h1>Tu rinc&oacute;n suave</h1>
+        <p>Inicia sesi&oacute;n y descubre una calculadora amigable que habla tu idioma.</p>
+    </header>
 
-<div class="container" id="login-container">
-    <h1>~Welcome to your Login Screen~</h1>
-    <p class="italic">*To log into your account, please enter your username and password.*</p>
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="button" onclick="login()">Login</button>
-    </form>
-    <p id="login-message"></p>
-</div>
+    <section class="card card--visible" id="login-card">
+        <form id="loginForm" autocomplete="on">
+            <label>
+                <span>Nombre de usuario</span>
+                <input type="text" name="username" placeholder="pitita1" autocomplete="username" required>
+            </label>
+            <label>
+                <span>Contrase&ntilde;a</span>
+                <input type="password" name="password" placeholder="Ingresa tu contrase&ntilde;a" autocomplete="current-password" required>
+            </label>
+            <button type="submit" class="primary">Entrar</button>
+        </form>
+        <p id="login-message" class="message" hidden aria-live="polite"></p>
+    </section>
 
-<div class="container" id="calculator-container" style="display:none;">
-    <h1>~Calculadora Jud~</h1>
-    <p>
-        Si deseas sumar, escribe: SUMA<br>
-        Si deseas restar, escribe: RESTA<br>
-        Si deseas multiplicar, escribe: MULTIPLICA<br>
-        Si deseas dividir, escribe: DIVIDE
-    </p>
-    <input type="text" id="operation" placeholder="Escribe la operación que deseas realizar">
-    <input type="number" id="num1" placeholder="Introduzca el primer valor">
-    <input type="number" id="num2" placeholder="Introduzca el segundo valor">
-    <button type="button" onclick="calculate()">Calcular</button>
-    <p id="calc-result"></p>
-    <button type="button" onclick="resetCalculator()">Otra Operación</button>
-    <button type="button" onclick="logout()">Cerrar Sesión</button>
-</div>
+    <section class="card" id="calculator-card" hidden>
+        <h2>Calculadora encantada</h2>
+        <p style="margin-top: 0; color: var(--muted);">Elige la operaci&oacute;n, agrega los n&uacute;meros y deja que la magia haga el resto.</p>
+
+        <form id="calcForm">
+            <fieldset>
+                <legend>Selecciona la magia</legend>
+                <div class="operation-grid">
+                    <label class="pill">
+                        <input type="radio" name="operation" value="SUMA" required>
+                        <span>Suma &#10024;</span>
+                    </label>
+                    <label class="pill">
+                        <input type="radio" name="operation" value="RESTA">
+                        <span>Resta &#10084;</span>
+                    </label>
+                    <label class="pill">
+                        <input type="radio" name="operation" value="MULTIPLICA">
+                        <span>Multiplica &#127872;</span>
+                    </label>
+                    <label class="pill">
+                        <input type="radio" name="operation" value="DIVIDE">
+                        <span>Divide &#128293;</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="inputs-double">
+                <label>
+                    <span>Primer n&uacute;mero</span>
+                    <input type="number" name="num1" placeholder="Ej. 8.5" step="any" required>
+                </label>
+                <label>
+                    <span>Segundo n&uacute;mero</span>
+                    <input type="number" name="num2" placeholder="Ej. 3" step="any" required>
+                </label>
+            </div>
+
+            <button type="submit" class="primary">Calcular</button>
+        </form>
+
+        <p id="calc-result" class="message" hidden aria-live="polite"></p>
+
+        <div class="card-actions">
+            <button type="button" class="ghost" id="resetButton">Otra operaci&oacute;n</button>
+            <button type="button" class="ghost" id="logoutButton">Cerrar sesi&oacute;n</button>
+        </div>
+    </section>
+</main>
 
 <script>
     const users = {
-        "pitita1": "1234",
-        "pitita2": "12345",
-        "pitita3": "123456"
+        pitita1: '1234',
+        pitita2: '12345',
+        pitita3: '123456'
     };
 
-    function login() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const loginMessage = document.getElementById("login-message");
+    const loginForm = document.getElementById('loginForm');
+    const calcForm = document.getElementById('calcForm');
+    const loginCard = document.getElementById('login-card');
+    const calculatorCard = document.getElementById('calculator-card');
+    const loginMessage = document.getElementById('login-message');
+    const calcResult = document.getElementById('calc-result');
+    const resetButton = document.getElementById('resetButton');
+    const logoutButton = document.getElementById('logoutButton');
+    const welcomeTitle = document.querySelector('.welcome h1');
+    const welcomeText = document.querySelector('.welcome p');
 
-        if (users[username] && users[username] === password) {
-            loginMessage.style.color = "green";
-            loginMessage.textContent = `Login successful! Welcome ${username.charAt(0).toUpperCase() + username.slice(1)} to your page!`;
-            document.getElementById("login-container").style.display = "none";
-            document.getElementById("calculator-container").style.display = "block";
-        } else {
-            loginMessage.style.color = "red";
-            loginMessage.textContent = "Wrong Username or Password";
+    const initialWelcome = {
+        title: welcomeTitle.textContent,
+        text: welcomeText.textContent
+    };
+
+    const messages = {
+        invalidLogin: 'Usuario o contrase\u00F1a incorrectos. Intenta de nuevo.',
+        welcome: (name) => `Entrada exitosa. \u00A1Hola, ${name}!`,
+        missingNumbers: 'Necesitas dos n\u00FAmeros para calcular. '
+            + 'Revisa que ambos campos tengan un valor.',
+        divideByZero: 'No se puede dividir entre cero. Cambia el segundo n\u00FAmero para continuar.',
+        invalidOperation: 'Elegimos una operaci\u00F3n m\u00E1gica antes de calcular.'
+    };
+
+    const formatName = (value) => value.charAt(0).toUpperCase() + value.slice(1);
+
+    const showCard = (cardToShow) => {
+        [loginCard, calculatorCard].forEach((card) => {
+            if (card === cardToShow) {
+                card.hidden = false;
+                requestAnimationFrame(() => card.classList.add('card--visible'));
+            } else {
+                card.hidden = true;
+                card.classList.remove('card--visible');
+            }
+        });
+    };
+
+    const showMessage = (node, text, intent = 'info') => {
+        node.dataset.intent = intent;
+        node.textContent = text;
+        node.hidden = false;
+        node.classList.remove('shake');
+        if (intent === 'error') {
+            requestAnimationFrame(() => node.classList.add('shake'));
         }
-    }
+    };
 
-    function calculate() {
-        const operation = document.getElementById("operation").value.toUpperCase();
-        const num1 = parseFloat(document.getElementById("num1").value);
-        const num2 = parseFloat(document.getElementById("num2").value);
-        const calcResult = document.getElementById("calc-result");
+    const hideMessage = (node) => {
+        node.hidden = true;
+        node.textContent = '';
+        node.classList.remove('shake');
+        delete node.dataset.intent;
+    };
+
+    loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(loginForm);
+        const usernameRaw = formData.get('username').trim();
+        const password = formData.get('password');
+        const usernameKey = usernameRaw.toLowerCase();
+
+        if (users[usernameKey] && users[usernameKey] === password) {
+            const prettyName = formatName(usernameKey);
+            showMessage(loginMessage, messages.welcome(prettyName), 'success');
+            showCard(calculatorCard);
+            welcomeTitle.textContent = `Hola, ${prettyName}`;
+            welcomeText.textContent = 'Tu calculadora encantada est\u00E1 lista para ayudarte.';
+            hideMessage(calcResult);
+            calcForm.reset();
+        } else {
+            showMessage(loginMessage, messages.invalidLogin, 'error');
+        }
+    });
+
+    calcForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(calcForm);
+        const operation = formData.get('operation');
+        const num1 = parseFloat(formData.get('num1'));
+        const num2 = parseFloat(formData.get('num2'));
+
+        if (!operation) {
+            showMessage(calcResult, messages.invalidOperation, 'error');
+            return;
+        }
+
+        if (Number.isNaN(num1) || Number.isNaN(num2)) {
+            showMessage(calcResult, messages.missingNumbers, 'error');
+            return;
+        }
 
         let result;
         switch (operation) {
-            case "SUMA":
+            case 'SUMA':
                 result = num1 + num2;
                 break;
-            case "RESTA":
+            case 'RESTA':
                 result = num1 - num2;
                 break;
-            case "MULTIPLICA":
+            case 'MULTIPLICA':
                 result = num1 * num2;
                 break;
-            case "DIVIDE":
-                if (num2 !== 0) {
-                    result = num1 / num2;
-                } else {
-                    calcResult.style.color = "red";
-                    calcResult.innerHTML = "<em>*No se puede dividir entre cero. Operación no válida. Por favor, elige una opción válida.*</em>";
+            case 'DIVIDE':
+                if (num2 === 0) {
+                    showMessage(calcResult, messages.divideByZero, 'error');
                     return;
                 }
+                result = num1 / num2;
                 break;
             default:
-                calcResult.style.color = "red";
-                calcResult.textContent = "Operación no válida. Por favor, elige una opción válida.";
+                showMessage(calcResult, messages.invalidOperation, 'error');
                 return;
         }
 
-        calcResult.style.color = "black";
-        calcResult.textContent = "Resultado: " + result;
-    }
+        const formatted = Number.isInteger(result) ? result : Number(result.toFixed(4));
+        showMessage(calcResult, `Resultado: ${formatted}`, 'success');
+    });
 
-    function resetCalculator() {
-        document.getElementById("operation").value = "";
-        document.getElementById("num1").value = "";
-        document.getElementById("num2").value = "";
-        document.getElementById("calc-result").textContent = "";
-    }
+    resetButton.addEventListener('click', () => {
+        calcForm.reset();
+        hideMessage(calcResult);
+    });
 
-    function logout() {
-        document.getElementById("login-container").style.display = "block";
-        document.getElementById("calculator-container").style.display = "none";
-        document.getElementById("loginForm").reset();
-        document.getElementById("login-message").textContent = "";
-        resetCalculator();
-    }
+    logoutButton.addEventListener('click', () => {
+        loginForm.reset();
+        calcForm.reset();
+        hideMessage(calcResult);
+        hideMessage(loginMessage);
+        welcomeTitle.textContent = initialWelcome.title;
+        welcomeText.textContent = initialWelcome.text;
+        showCard(loginCard);
+    });
 </script>
-
 </body>
 </html>
